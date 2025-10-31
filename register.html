@@ -390,7 +390,7 @@
 </head>
 <body class="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-black">
 
-    <img src="logo.png" alt="Cinesaga Logo" class="page-logo"/>
+    <img src="logo.PNG" alt="Cinesaga Logo" class="page-logo"/>
 
     <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
 
@@ -489,7 +489,7 @@
 
                         <div class="taskello-footer-data">
                             <div class="taskello-footer-left">
-                                <img src="logo.png" alt="Event Logo" class="logo-img"/>
+                                <img src="logo.PNG" alt="Event Logo" class="logo-img"/>
                             </div>
                             <div class="taskello-footer-right-details">
                                 Event: <span id="pass-event-category"></span><br>
@@ -630,7 +630,7 @@
                     scale: 3 // Higher scale for better quality
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = `Cinesaga_2K25_Pass_${participantName.replace(/\s/g, '_')}.png`;
+                    link.download = `Cinesaga_2K25_Pass_${participantName.replace(/\s/g, '_')}.PNG`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 });
