@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "major-469312",
+  "private_key_id": "8baad6791afc599b4868d0907810ddab2eeac608",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCjTSZVNjWVZEz8\nU8tPvEizC/RKQk+Ps5CYHrLolSn8u1BlD3yW/M6kC4Y5YJBEmGcWhpB4dSZPs9SI\ntsCZTG/LOAYpp4GW4aHTlC5AWzHSF6/1VMLSKoTV7iBz0r8LHjcjIQR9OFRBUFC7\nqQhPgjZu8DQ8Pgavie46pOhrCNnjOxM9iBHp3z6N3f7jweatCvNkPAK+zDbO3/ei\nhf2hIlr/jjNlisFEwX4wn7Khpz8Yj1YHT9if8s0LjBqhWSQHWNUHXL5CCu3f74Ey\nlkVGE8kxyr3GHIwLecuFq/RvunbgLqm6ET2bQ2NQjVUvikmLOosQvCLCT2vAfrbw\ntytqKNixAgMBAAECggEAF9OTDb4gmFZaSJCzVUQhZAUQ/4q9pWJrl6kXAooiZlkw\nPuaWZPNS9SrR9T+KcoUSuX3THiLoVEW782Hy0mCNiTGjQzhJAf+UMdTo4K6i+Mad\nqlEpMdVOrLtsqb7sl/iFzqQrzazGglcacx8TyCy1Y39m/Qkxxt1RpeXXcX0znrc3\nqFAfmVUVREgmx+r1bOpD9oKu+26CZiVOK/XF0/vsFszzAHYoCGppB2AVtl1o7jxq\nNqMKkEazC4SxLtnIxE27TyoQ30T9EucLIFYek8+P6kK8hjQ3+TgZzjKNH8mhamOa\nhpkfRZnHv25H7uJFPW6FCqcB44MW3/nLw+GmXSecDwKBgQDk+XoCfKitXwyxTawP\nLAmmMjp9MareRKGl5wYF9nv5RjNUAFA1EgrHpj5GDspYU3GBEkufyxb6xJx/hjTZ\nBWRbgyCY+YidhLPMuesZyLENF5BDfyN6CfFFYwYVlut6rEYk0WGWvIIa1JqaoZNq\ntbeLc5eG1LrY4nQuMlO+1Hm4TwKBgQC2k1eVXnYV/oyvLrBxIo1dCqIvqJprK1br\nOmEQjIZHqg7gTbkT2vFSww3hEvt57aLJzhrxFkGNMKxKcLhLnLPhGvczrFihHPQb\nQeZKJC54LWE+u6lwz/i3cROOcOT6P3SbW0DyqkVvRXq54X4Ww73N5dQBgpTcv3VS\naMcXJF8e/wKBgBnHBDdXdV3fP3yOc/pZSNTO/sqtVsEjFNeqhIETWK2de5XPWzg+\nSbxkOMqGS71Z14NiXeUlZfbhP4UTxMtR0hSDVJ4kKX8iO2Om4pLKhzQkHPecTpAk\nombfWQYBMY1j65mlgMkJe9QtbyJNYl03C+zFHJ/vPwG/rLiurcLkBLf9AoGAbBt2\n4vVaCs/9UcXdqEADYLJpMrstJIQ3JXYd/4SWBl1GDb839e/QsWbaEwoAakQx/jjS\nbyr0ibvmaPWxyuPxBzvGYIyOtmfEi1dMG16tPW/xgwnv3OLorQaBw/hJPXzReSRh\nos776lVDxEknNieVfhO2o2ZE6ylbOP7d1HAu+tUCgYBu8by3Ta8ZdolAR5N2iwi6\nrgAjLWZez5PehpuFRQ16NdF4FHoGop5KC51GJGl08eP5GWEArjMlpvTsWoZOSoIZ\nT3qMzItUJRUMwwzmrbaCVcxOwXD8gdza/0+iMpkLlGkGxtgXbcEpRW0PEfao9R3X\nPPvme6YpQwY4GUY6zrIhvg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "cinesaga@major-469312.iam.gserviceaccount.com",
+  "client_id": "101596562345511168868",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cinesaga%40major-469312.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

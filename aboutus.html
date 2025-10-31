@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinesaga 2K25 - About Us</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Styles: Pure Black Background & Flex Layout for Single Page */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000; /* Pure Black Background */
+            color: #ffffff;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-y: scroll; /* Allow full page scroll for content + links */
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 2rem; /* Space below the links box */
+        }
+
+        /* Set Lexend for Titles */
+        .title-font {
+            font-family: 'Lexend', sans-serif;
+        }
+
+        /* Glassmorphism Navigation */
+        .glass-nav {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.15); 
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Aligned to the top */
+            padding: 5rem 1rem 0;
+            max-width: 100vw;
+        }
+
+        /* --- HORIZONTAL CAROUSEL STYLES (Click-to-Focus) --- */
+        
+        .team-carousel-container {
+            width: 100%;
+            overflow-x: scroll; /* Maintain scroll for viewing all cards */
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 20px; 
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            flex-shrink: 0;
+            height: 380px; 
+            display: flex;
+            align-items: center; 
+        }
+
+        .team-carousel-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .team-carousel-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        .team-carousel-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .carousel-track {
+            display: flex;
+            gap: 2rem; 
+            width: max-content;
+            align-items: flex-start;
+            padding: 0 1rem; /* Reduced padding since we are not centering items automatically */
+        }
+        
+        .member-card {
+            flex-shrink: 0;
+            width: 200px; 
+            height: 320px; 
+            border-radius: 12px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+            
+            /* Default appearance: Small size, CLEAR */
+            transition: transform 0.4s ease-out, filter 0.4s ease-out;
+            filter: blur(0px); /* Initially clear */
+            transform: scale(0.9); /* Initially small */
+        }
+        
+        /* State when card is actively selected/focused */
+        .member-card.active-focus {
+            filter: blur(0px);
+            transform: scale(1.15); /* Maximum size */
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+            z-index: 10; /* Bring to front */
+        }
+        /* State when card is NOT selected/focused AND there IS an active card */
+        .member-card.unfocused {
+            filter: blur(3px); /* Maximum blur */
+            transform: scale(0.8); /* Even smaller */
+        }
+
+        /* Reset for the whole group when no card is focused */
+        .member-card:not(.active-focus) {
+             /* Inherit default styles when no card is selected, handled by JS function toggleFocusState() */
+        }
+        
+        .member-image {
+            background-size: cover;
+            background-position: center;
+            height: 70%;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .team-info {
+            height: 30%;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .team-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .team-info p {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        /* --- Social Links Box --- */
+        .social-box {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            margin-top: 2rem; /* Gap below the carousel */
+        }
+        .social-link {
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+        .social-link:hover {
+            color: #c084fc; /* Purple accent on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: 4rem;
+            }
+            .member-card {
+                width: 140px;
+                height: 240px;
+            }
+            .team-info h3 {
+                font-size: 0.9rem;
+            }
+            .team-info p {
+                font-size: 0.7rem;
+            }
+            .carousel-track {
+                gap: 1rem;
+            }
+            .team-carousel-container {
+                 height: 300px;
+            }
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- Navigation (Simple glass button to go back) -->
+    <header class="fixed top-6 left-6 z-50">
+        <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-nav text-white hover:bg-white/30 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back to Home
+        </a>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content mx-auto max-w-7xl">
+        
+        <!-- --- TOP CONTENT (LOGO, ABOUT US & PARAGRAPH) --- -->
+        <section class="text-center w-full mb-4 flex-shrink-0">
+            
+            <!-- Logo -->
+            <img src="logo.png" alt="VCET Diaries Logo" class="mx-auto h-16 w-auto mb-4">
+
+            <h1 class="title-font text-4xl sm:text-5xl font-extrabold mb-3">
+                About Us
+            </h1>
+            
+            <!-- UPDATED PARAGRAPH TEXT and FONT SIZE 12 -->
+            <p class="text-xs max-w-4xl mx-auto text-gray-300 px-4 leading-relaxed">
+                **VCET Diaries** is the official media and creative team of Vivekananda College of Engineering and Technology (VCET). We are a passionate group of students dedicated to capturing the moments, memories, and milestones that define campus life. From photography and videography to design and content creation, our team works to showcase the vibrant spirit and achievements of our college community. We document events, highlight student talent, and bring stories to life through our lenses and creativity. More than just a media team, VCET Diaries is a family of innovators who blend technology with artistry to preserve and promote the essence of VCET.
+            </p>
+        </section>
+
+        <!-- --- MEET OUR TEAM SECTION & FLAT CAROUSEL --- -->
+        <section class="w-full flex-grow flex flex-col justify-start">
+            <h2 class="title-font text-3xl sm:text-4xl font-bold text-center mb-6">
+                Meet Our Team
+            </h2>
+            
+            <!-- Horizontal Carousel Container -->
+            <div id="team-carousel-container" class="team-carousel-container">
+                <div id="team-carousel-track" class="carousel-track">
+                    <!-- Cards injected here by JS -->
+                </div>
+            </div>
+            
+        </section>
+        
+        <!-- --- SOCIAL LINKS SECTION --- -->
+        <section class="w-full max-w-2xl mx-auto social-box">
+            <h3 class="text-xl font-bold text-center mb-4 title-font">Connect with VCET Diaries</h3>
+            <div class="flex flex-wrap justify-around gap-4 text-white">
+                <!-- UPDATED EMAIL -->
+                <a href="mailto:vcetstud3nts@gmail.com" class="social-link flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span class="text-xs mt-1">Email</span>
+                </a>
+                <!-- UPDATED INSTAGRAM -->
+                <a href="https://www.instagram.com/vcetdiaries?utm_source=ig_web_button_share_sheet&igsh=MXVocWl5c3NuOHIzNQ==" target="_blank" class="social-link flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 3h3v3h-3z"/><circle cx="12" cy="12" r="4"/><line x1="12" x2="12" y1="12" y2="12"/></svg>
+                    <span class="text-xs mt-1">Instagram</span>
+                </a>
+                <!-- UPDATED YOUTUBE -->
+                <a href="https://youtube.com/@vcetdiaries?si=JRTt_NFvcxQYGl0T" target="_blank" class="social-link flex flex-col items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8.7-7.5 4.3V20l7.5-4.3V8.7z"/><path d="m14.5 13-7.5-4.3V20l7.5 4.3V13z"/><path d="M7 8.7V4.4L14.5 0v4.3L7 8.7z"/></svg>
+                    <span class="text-xs mt-1">YouTube</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const teamMembers = [
+                { name: "Sai Suman", role: "Poster Designer", image: "team-1.jpg" }, // Using logo.png for team leader for consistency
+                { name: "Pruthvi GK", role: "Story Lead", image: "team-2.jpg" },
+                { name: "Kausik N G", role: "Photography Lead", image: "team-3.jpg" },
+                { name: "Pradeesha", role: "Photographer", image: "team-4.jpg" },
+                { name: "Vansh", role: "Videographer", image: "team-5.jpg" },
+                { name: "Preetham Rao", role: "Coordinator", image: "team-6.jpg" },
+                { name: "Sharanya M", role: "Coordinator", image: "team-7.jpg" },
+                { name: "Srinivas Hegde", role: "Script Writer", image: "team-8.jpg" },
+                { name: "Shyam Kumar Mittur", role: "Videographer", image: "team-9.jpg" },
+                { name: "Pratheek Shetty", role: "Videographer", image: "team-10.jpg" },
+                { name: "Deepak S", role: "Videographer", image: "team-11.jpg" },
+                { name: "Varsha Nayak", role: "Photographer", image: "team-12.jpg" },
+                { name: "Chidesh", role: "Poster Designer", image: "team-13.jpg" },
+            ];
+
+            const track = document.getElementById('team-carousel-track');
+            const container = document.getElementById('team-carousel-container');
+            
+            // --- 1. RENDER CARDS ---
+            const renderCards = () => {
+                track.innerHTML = teamMembers.map((member, index) => {
+                    const cardStyle = member.leader ? 'text-yellow-400 font-bold' : '';
+                    
+                    return `
+                        <div class="member-card" id="member-${index}" data-index="${index}">
+                            <div class="member-image" style="background-image: url(${member.image});"></div>
+                            <div class="team-info">
+                                <h3 class="${cardStyle}">${member.name}</h3>
+                                <p>${member.role}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            // --- 2. FOCUS LOGIC (Click/Tap Handler) ---
+            const focusCard = (cardElement) => {
+                const isCurrentlyActive = cardElement.classList.contains('active-focus');
+                
+                // If the clicked card is already active, UNFOCUS everything (return to default clear state)
+                if (isCurrentlyActive) {
+                    track.querySelectorAll('.member-card').forEach(card => {
+                        card.classList.remove('active-focus');
+                        card.classList.remove('unfocused');
+                        // Reset all to default clear state
+                        card.style.filter = 'blur(0px)';
+                        card.style.transform = 'scale(0.9)';
+                    });
+                    // Exit the function
+                    return; 
+                }
+
+                // --- If not active, focus it and blur the others ---
+                
+                // 1. Unfocus all other cards (apply blur/small scale)
+                track.querySelectorAll('.member-card').forEach(card => {
+                    card.classList.remove('active-focus');
+                    // Apply unfocused styles directly to override default clear state
+                    card.style.filter = 'blur(3px)';
+                    card.style.transform = 'scale(0.9)';
+                });
+
+                // 2. Focus the clicked card (clear/large scale)
+                cardElement.classList.add('active-focus');
+                cardElement.style.filter = 'blur(0px)';
+                cardElement.style.transform = 'scale(1.15)';
+                
+                // CRUCIAL CHANGE: REMOVED container.scrollTo() to prevent movement
+                
+            };
+            
+            // --- 3. ATTACH LISTENERS ---
+            const attachListeners = () => {
+                track.querySelectorAll('.member-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        focusCard(e.currentTarget);
+                    });
+                });
+            };
+
+            // Initial render
+            renderCards();
+            
+            // Attach event listeners
+            attachListeners();
+
+            // --- Initial State: All cards clear ---
+            setTimeout(() => {
+                const cards = track.querySelectorAll('.member-card');
+                if (cards.length > 0) {
+                    // Set all cards to default clear state explicitly on load
+                    cards.forEach(card => {
+                        card.style.filter = 'blur(0px)';
+                        card.style.transform = 'scale(0.9)';
+                    });
+                }
+            }, 100); 
+            
+        });
+    </script>
+</body>
+</html>

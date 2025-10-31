@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinesaga 2K25 Competition</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ballet&family=Inter:wght@400;700&family=Jersey+25&family=Playfair+Display:wght@700&family=Silkscreen&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- 1. Global & Font Setup --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Default sans-serif */
+            background-color: #111111; /* Fallback background */
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ffffff;
+            transition: color 0.3s ease;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- 2. Header & Navigation --- */
+        .main-header {
+            position: absolute;
+            top: 1.5rem;
+            left: 0;
+            width: 100%;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo-container {
+            flex-shrink: 0; /* Prevent the logo from shrinking */
+        }
+
+        .logo-container img {
+            height: 75px; /* Increased logo size */
+            width: auto;
+        }
+
+        .main-nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            
+            /* Glassmorphism styles */
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.25rem 0;
+            position: relative;
+            color: #e0e0e0;
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        .main-nav a:hover {
+            color: #ffffff;
+        }
+
+        .register-btn {
+            padding: 0.8rem 1.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden; /* Needed for the pseudo-element */
+            
+            /* Glassmorphism styles */
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .register-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; /* Position right at the bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .register-btn:hover::after {
+            width: 80%; /* Grow to 80% to avoid touching edges */
+        }
+
+        .register-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- 3. Hero Section & NEW 3D Marquee --- */
+        .hero-section {
+            height: 100vh; /* Full viewport height */
+            width: 100%;
+            position: relative; /* Needed for absolute children */
+            overflow: hidden; /* Hide overflowing marquee content */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .marquee-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%; 
+            height: 100%; 
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            gap: 1.5rem; 
+        }
+
+        .marquee {
+            display: flex;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            height: 240px; 
+            align-items: center;
+        }
+
+        .marquee::before,
+        .marquee::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            z-index: 5; 
+            background-image:
+                linear-gradient(
+                    to bottom,
+                    rgba(255, 255, 255, 0.08) 0%, 
+                    rgba(255, 255, 255, 0.05) 50%, 
+                    rgba(0, 0, 0, 0.1) 51%,      
+                    rgba(0, 0, 0, 0.2) 100%       
+                ),
+                repeating-linear-gradient(
+                    90deg, 
+                    #1a1a1a,      
+                    #1a1a1a 40px, 
+                    #101010 40px, 
+                    #101010 55px,  
+                    #1a1a1a 55px  
+                );
+        }
+
+        .marquee::before { top: 0; }
+        .marquee::after { bottom: 0; }
+
+        .marquee-track {
+            display: flex;
+            flex-shrink: 0;
+            gap: 2rem;
+            animation: scroll 40s linear infinite;
+        }
+
+        .marquee.reverse .marquee-track {
+            animation-name: scroll-reverse;
+        }
+
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        @keyframes scroll-reverse {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(0); }
+        }
+
+        .marquee-image {
+            display: block;
+            height: 200px; 
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .marquee-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Increased opacity for better text visibility */
+            background: radial-gradient(circle, rgba(17,17,17,0.6) 0%, rgba(17,17,17,0.9) 70%, #111111 100%);
+            z-index: 2;
+        }
+
+
+        /* --- 4. Hero Content (Text & Buttons) --- */
+        .hero-content {
+            position: relative; 
+            z-index: 3; 
+            animation: fadeIn 1.5s ease-in-out;
+            margin-top: 5vh; /* Pushes the content down */
+        }
+        
+        .content-box {
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            padding: 3rem; /* Increased padding */
+            margin-bottom: 2rem; /* Space between box and buttons */
+        }
+
+        .hero-headline {
+            position: relative;
+            display: inline-block; 
+            margin-bottom: 0.2rem; 
+            text-shadow: 0 2px 20px rgba(0,0,0,0.7);
+            line-height: 1.1; 
+        }
+
+        .headline-top {
+            position: absolute; 
+            top: -15px; /* Adjusted position */
+            left: -35px; /* Adjusted position */
+            font-family: 'Ballet', cursive;
+            font-size: 48px; /* Increased font size */
+            font-weight: normal;
+        }
+
+        .headline-main {
+            display: block;
+            font-family: 'Jersey 25', sans-serif;
+            font-size: 72px; /* Increased font size */
+            letter-spacing: 3px;
+        }
+
+        .hero-tagline {
+            font-family: 'Silkscreen', sans-serif;
+            font-size: 26px; /* Increased font size */
+            margin-bottom: 1.5rem; /* Increased margin */
+            text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+            line-height: 1.3;
+        }
+
+        .hero-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 22px; /* Increased font size */
+            font-weight: 400;
+            margin-bottom: 0; /* Removed margin as padding is on parent */
+            max-width: 700px; /* Increased max-width */
+            margin-left: auto;
+            margin-right: auto;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.7);
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .hero-buttons .btn {
+            padding: 0.8rem 2.2rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .hero-buttons .btn::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background-color: #ffffff;
+            transition: width 0.3s ease;
+        }
+
+        .hero-buttons .btn:hover::after {
+            width: 80%;
+        }
+
+
+        .hero-buttons .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- 5. Animations & Responsiveness --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 992px) {
+            .main-nav { display: none; } /* Hide nav on tablets/mobile for now */
+        }
+
+
+        @media (max-width: 768px) {
+            .headline-main { font-size: 48px; }
+            .headline-top { font-size: 32px; top: -10px; left: -20px;}
+            .hero-tagline { font-size: 20px; }
+            .hero-description { font-size: 18px; }
+            .main-header { padding: 0 1.5rem; }
+            .logo-container img { height: 45px; }
+            .register-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.8rem;
+            }
+            .content-box {
+                padding: 1.5rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+            }
+            .hero-buttons .btn {
+                width: 80%;
+                margin: 0.5rem auto;
+            }
+            .marquee-image { height: 120px; }
+            .marquee-background {
+                 transform: translate(-50%, -50%);
+            }
+        }
+
+        /* --- 6. Utility Classes --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #FFB800;
+        }
+
+        /* --- 7. NEW FLIPPING CATEGORIES SECTION --- */
+        .new-categories-section {
+            padding: 6rem 0;
+            background-color: #000;
+        }
+
+        .new-categories-section .wrapper {
+            width: 90%;
+            margin: 0 auto;
+            max-width: 80rem;
+        }
+
+        .new-categories-section .cols {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .new-categories-section .col {
+            width: calc(40% - 2rem);
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        .new-categories-section .container {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .new-categories-section .front,
+        .new-categories-section .back {
+            background-size: cover;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            background-position: center;
+            transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+            backface-visibility: hidden;
+            text-align: center;
+            min-height: 400px;
+            height: auto;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .new-categories-section .back {
+            background: #cedce7;
+            background: linear-gradient(45deg, #cedce7 0%, #596a72 100%);
+            color: #111;
+        }
+
+        .new-categories-section .front:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            content: '';
+            display: block;
+            opacity: .6;
+            background-color: #000;
+            backface-visibility: hidden;
+            border-radius: 10px;
+        }
+
+        .new-categories-section .container:hover .front,
+        .new-categories-section .container:hover .back {
+            transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+
+        .new-categories-section .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .new-categories-section .inner {
+            transform: translateY(-50%) translateZ(60px) scale(0.94);
+            top: 50%;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            box-sizing: border-box;
+            outline: 1px solid transparent;
+            perspective: inherit;
+            z-index: 2;
+        }
+
+        .new-categories-section .container .back {
+            transform: rotateY(180deg);
+            transform-style: preserve-3d;
+        }
+
+        .new-categories-section .container .front {
+            transform: rotateY(0deg);
+            transform-style: preserve-3d;
+        }
+
+        .new-categories-section .container:hover .back {
+            transform: rotateY(0deg);
+            transform-style: preserve-3d;
+        }
+
+        .new-categories-section .container:hover .front {
+            transform: rotateY(-180deg);
+            transform-style: preserve-3d;
+        }
+
+        .new-categories-section .front .inner p {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .new-categories-section .front .inner p:after {
+            content: '';
+            width: 4rem;
+            height: 2px;
+            position: absolute;
+            background: #C6D4DF;
+            display: block;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            bottom: -.75rem;
+        }
+
+        .new-categories-section .front .inner span {
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .new-categories-section .back .inner p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        @media screen and (max-width: 64rem) {
+            .new-categories-section .col {
+                width: calc(50% - 2rem);
+            }
+        }
+
+        @media screen and (max-width: 48rem) {
+            .new-categories-section .col {
+                width: calc(80% - 2rem);
+            }
+        }
+
+        @media screen and (max-width: 32rem) {
+            .new-categories-section .col {
+                width: 100%;
+                margin: 0 0 2rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero-section" id="home">
+        
+        <div class="marquee-background">
+            <div class="marquee">
+                <div class="marquee-track"></div>
+            </div>
+            <div class="marquee reverse">
+                <div class="marquee-track"></div>
+            </div>
+            <div class="marquee">
+                <div class="marquee-track"></div>
+            </div>
+            <div class="marquee reverse">
+                <div class="marquee-track"></div>
+            </div>
+        </div>
+        
+        <div class="hero-overlay"></div>
+
+        <header class="main-header">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.png" alt="VCET Diaries Logo">
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="rules.html">Rulebook</a></li>
+                    <li><a href="#categories">Category</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                </ul>
+            </nav>
+            <a href="submit.html" class="register-btn">Submit</a>
+        </header>
+
+        <main class="hero-content">
+            <div class="content-box">
+                <h1 class="hero-headline">
+                    <span class="headline-top">The</span>
+                    <span class="headline-main">CINESAGA 2K25</span>
+                </h1>
+                <p class="hero-tagline">THE ART OF SEEING BEYOND THE FRAMES</p>
+                <p class="hero-description">Step into the colors, culture, and chaos of Diwali! The Cine Saga challenges you to express the festival’s energy through your lens — be it the sparkle of diyas, the joy of gatherings, or the beauty of tradition reborn in light.</p>
+            </div>
+            <div class="hero-buttons">
+                <a href="register.html" class="btn">Register Now</a>
+                <a href="gallery.html" class="btn">View Gallery</a>
+            </div>
+        </main>
+    </section>
+
+    <section class="new-categories-section" id="categories">
+        <div class="wrapper">
+            <h2 class="section-heading">Competition Categories</h2>
+            <div class="cols">
+                <div class="col" ontouchstart="this.classList.toggle('hover');">
+                    <div class="container">
+                        <div class="front" style="background-image: url('images/category-photo.jpg');">
+                            <div class="inner">
+                                <p>Photography</p>
+                                <span>Stories of Light</span>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <div class="inner">
+                                <p>Submit three (3) original RAW photographs, unmanipulated and unedited. Each photo must include a brief description.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" ontouchstart="this.classList.toggle('hover');">
+                    <div class="container">
+                         <div class="front" style="background-image: url('images/category-reels.jpg');">
+                            <div class="inner">
+                                <p>Reels</p>
+                                <span>Diwali: A Cinematic Reverie</span>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <div class="inner">
+                                <p>Submit one video of up to 60-90 seconds in duration. Include a description explaining the concept or story.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Paths to your marquee images inside the 'images' folder
+            const images = [
+                'images/marquee-1.jpg',
+                'images/marquee-2.jpg',
+                'images/marquee-3.jpg',
+                'images/marquee-4.jpg',
+                'images/marquee-5.jpg',
+                'images/marquee-6.jpg'
+            ];
+
+            const tracks = document.querySelectorAll('.marquee-track');
+
+            tracks.forEach(track => {
+                images.forEach(src => {
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = 'Competition Entry';
+                    img.className = 'marquee-image';
+                    a.appendChild(img);
+                    track.appendChild(a);
+                });
+
+                // Duplicate images for a seamless loop
+                images.forEach(src => {
+                    const a = document.createElement('a');
+                    a.href = '#';
+                    const img = document.createElement('img');
+                    img.src = src;
+                    img.alt = 'Competition Entry';
+                    img.className = 'marquee-image';
+                    a.appendChild(img);
+                    track.appendChild(a);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

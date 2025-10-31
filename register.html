@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Cinesaga 2K25</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap'>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Base styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000; 
+        }
+
+        /* Custom scrollbar */
+        .form-scroll-container::-webkit-scrollbar { width: 6px; }
+        .form-scroll-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+        .form-scroll-container::-webkit-scrollbar-thumb { background: #fff; border-radius: 3px; }
+
+
+        /* ---------------------------------------------------------------- */
+        /* --- TASKELO PASS DESIGN (APPLIED ONLY HERE) --- */
+        /* ---------------------------------------------------------------- */
+
+        .taskello-pass-container {
+            width: 300px; /* Define size for the card */
+            height: 300px;
+            border-radius: 20px;
+            background-color: #1a1a1a; /* Dark base color */
+            position: relative;
+            overflow: hidden; 
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            margin: 0 auto; /* Center the pass */
+            transform: scale(0.9); /* Slightly reduce size to fit well */
+            transform-origin: center;
+        }
+
+        /* 1. Fiery Header Background */
+        .taskello-header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 110px; 
+            background: linear-gradient(135deg, rgba(255, 69, 0, 0.9), rgba(139, 0, 0, 0.9));
+            filter: blur(8px) saturate(1.5); 
+            transform: scale(1.1); 
+        }
+
+        /* 2. Dark Main Content Area with Folder Tab Cutout */
+        .taskello-main-content {
+            position: absolute;
+            top: 60px; /* Starts below the blurred header */
+            left: 0;
+            width: 100%;
+            height: calc(100% - 60px);
+            background-color: #000000;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1; 
+            
+            /* Clip-path for the angled top edge */
+            clip-path: polygon(0 20px, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Pseudo-element to create the rounded 'folder' shape */
+        .taskello-main-content::before {
+            content: '';
+            position: absolute;
+            top: -20px; 
+            left: 0;
+            width: 80%; 
+            height: 40px;
+            background-color: #000000;
+            border-bottom-right-radius: 15px; 
+        }
+
+        /* 3. Pass Text Styles */
+        .taskello-main-content .pass-event-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px; /* Slightly larger as requested */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.8); /* Light gray for Cinesaga 2K25 text */
+            position: absolute;
+            top: 20px; /* Adjusted position to be clearly on the orange */
+            right: 20px;
+            z-index: 2;
+        }
+
+        .taskello-main-content .pass-id-label {
+            font-size: 10px; 
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5); /* Lighter gray for labels */
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem; 
+            margin-top: 20px; /* Space from the top of the black box */
+            font-weight: 500;
+        }
+
+        .taskello-main-content .pass-id {
+            font-size: 1.5rem; /* Smaller than original pass */
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        
+        .taskello-main-content .pass-participant-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0; 
+        }
+        
+        /* 4. Footer Data Points */
+        .taskello-footer-data {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between; /* Space out logo and event/date */
+            align-items: flex-end; /* Align to the bottom */
+            z-index: 3;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .taskello-footer-left {
+            /* Now just holds the logo */
+            display: flex; 
+            align-items: center;
+        }
+
+        .taskello-footer-right-details { /* New class for the event/date details */
+            font-size: 12px;
+            font-weight: 500;
+            color: #fff;
+            text-align: right;
+            line-height: 1.3;
+        }
+
+
+        /* QR Code Styling (Positioned at the junction) */
+        #qrcode { 
+            background: white; 
+            padding: 5px; 
+            border-radius: 5px; 
+            position: absolute; 
+            top: 70px; /* Adjusted to sit at the junction, visually */
+            right: 15px; 
+            z-index: 5; /* Ensure it's on top of everything */
+        }
+        #qrcode canvas, #qrcode img { 
+            width: 60px !important; 
+            height: 60px !important; 
+            display: block; 
+        }
+
+        /* New styles for the logo on the pass */
+        .taskello-footer-left .logo-img {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+        }
+
+        /* Style for page-level logo */
+        .page-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10; /* Ensure it's on top */
+            width: 60px; /* Adjust size as needed */
+            height: auto;
+        }
+
+        /* Ensure smooth animations on button pseudo-elements (Lightbulb styles remain) */
+        button::before, button::after { transition: all 0.5s ease-out; content: ''; }
+
+        /* --- LIGHTBULB BUTTON STYLES (RETAINED) --- */
+        .lightbulb-button-container {
+             display: flex;
+             justify-content: center;
+             margin-top: 1.5rem;
+        }
+
+        .lightbulb-button {
+          cursor: pointer;
+          display: flex;
+          gap: 1px;
+          transition: all 0.3s ease;
+        }
+
+        .lightbulb-button:active {
+          transform: scale(0.95);
+        }
+
+        .lightbulb-button input {
+          display: none;
+        }
+
+        /* Simulate checked state visually for demo, JS handles click */
+        .lightbulb-button input:checked ~ .socket {
+          background-color: #5c5c5c;
+          transition: all 0.1s;
+        }
+        .lightbulb-button input:checked ~ .socket::before {
+           opacity: 1;
+           transition: all 0.1s;
+        }
+
+
+        .lightbulb-button .socket {
+          position: relative;
+          background-color: #3c3c3c;
+          width: 70px;
+          height: 60px;
+          border-radius: 50px 5px 5px 50px;
+          z-index: 1;
+          box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.8);
+          transition: all 0.3s ease;
+        }
+
+        .lightbulb-button .socket::before {
+          content: "";
+          position: absolute;
+          top: 4px;
+          right: 0;
+          width: 60px;
+          height: 35px;
+          border-radius: 50px 0 0 50px;
+          background-color: rgba(255, 255, 255, 0.6);
+          border: 4px solid #353535;
+          border-right: 0;
+          box-shadow: inset 4px 0 8px 4px rgba(0, 0, 0, 0.8);
+          filter: blur(4px);
+          opacity: 0.3;
+          transition: all 0.3s ease;
+        }
+
+        .lightbulb-button .socket::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 4px;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.2);
+          backdrop-filter: blur(2px);
+          mask-image: linear-gradient(
+            0deg,
+            transparent,
+            white 25%,
+            white 90%,
+            transparent
+          );
+        }
+
+        /* Style for when the checkbox *would be* checked */
+        .lightbulb-button input:checked ~ .light-bulb {
+          color: #ffffff;
+          border-color: #ffffff;
+          transition: all 0.1s;
+          box-shadow: inset 0 -4px 4px -1px rgba(255, 255, 255, 0.5);
+          filter: drop-shadow(0 0 2px #ffbe4e);
+        }
+        .lightbulb-button input:checked ~ .light-bulb .text-light-bulb {
+           text-shadow: 0 0 2px #ffbd44;
+        }
+        .lightbulb-button input:checked ~ .light-bulb .text-light-bulb::after,
+        .lightbulb-button input:checked ~ .light-bulb .text-light-bulb::before {
+           opacity: 1;
+           visibility: visible;
+           transition: all 0.1s;
+           animation-play-state: running; /* Start animation */
+        }
+
+
+        .lightbulb-button .light-bulb {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 160px; /* Adjust width as needed */
+          height: 60px;
+          color: #353535;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 5px 50px 50px 5px;
+          gap: 0.5rem;
+          box-shadow: inset 0 -4px 4px -1px rgba(255, 255, 255, 0.1);
+          transition: all 0.3s ease;
+          padding-left: 10px; /* Space for the SVG icon */
+        }
+
+        .lightbulb-button .light-bulb::before {
+          content: "";
+          position: absolute;
+          top: 4px;
+          left: 1px;
+          width: 130px;
+          height: 30px;
+          border-radius: 10px 50px 50px 0;
+          background-image: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.3) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(0, 0, 0, 0) 100%
+          );
+        }
+
+        .lightbulb-button .light-bulb::after {
+          content: "";
+          position: absolute;
+          right: 10px;
+          width: 155px;
+          height: 40px;
+          border-radius: 0 50px 50px 0;
+          background: rgba(255, 255, 255, 0.02);
+          border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+          filter: blur(2px);
+          mask: linear-gradient(90deg, transparent, white 80%, white 100%);
+        }
+
+        .lightbulb-button .text-light-bulb {
+          user-select: none;
+          pointer-events: none;
+          font-weight: 500;
+          font-size: 0.9rem; /* Adjusted text size */
+          position: relative; 
+          z-index: 2; 
+          margin-left: 15px;
+        }
+
+        /* Glow effects initially hidden */
+        .lightbulb-button .text-light-bulb::after {
+          content: "";
+          position: absolute;
+          top: -20px; 
+          left: -30px; 
+          height: 100px; 
+          width: 180px; 
+          background-image: linear-gradient(
+            to top,
+            #ff9346,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 0),
+            #ff9346
+          );
+          border-radius: 50%; 
+          z-index: -1;
+          filter: blur(35px); 
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          animation: light 20s linear infinite paused; 
+        }
+
+        .lightbulb-button .text-light-bulb::before {
+          content: "";
+          position: absolute;
+          top: -10px; 
+          left: -25px; 
+          width: 60px; 
+          height: 60px; 
+          background-color: #fff;
+          border: 10px solid #fb6902; 
+          border-radius: 50%; 
+          z-index: -1;
+          filter: blur(15px); 
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          animation: light 20s linear infinite paused; 
+        }
+
+        @keyframes light {
+          0%, 100% { transform: scale(1); opacity: 0; }
+          5% { transform: scale(1.1); }
+          10% { transform: scale(1); }
+          45% { transform: scale(1.1); }
+          50% { transform: scale(1); opacity: 0.5; }
+          95% { transform: scale(1.1); }
+        }
+        /* --- END LIGHTBULB BUTTON STYLES --- */
+
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-black">
+
+    <img src="logo.png" alt="Cinesaga Logo" class="page-logo"/>
+
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
+
+    <img
+        src="https://cdn.pixabay.com/photo/2020/03/09/06/18/camera-4914690_1280.jpg"
+        alt="Background"
+        class="absolute inset-0 w-full h-full object-cover opacity-40"
+    />
+
+    <div class="relative w-full max-w-6xl mx-4 bg-black/40 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+
+        <div class="hidden lg:flex items-center justify-center p-12">
+            <img
+                src="https://cdn.pixabay.com/photo/2014/11/22/00/51/camera-541213_1280.jpg"
+                alt="Robot"
+                class="w-full h-auto object-contain rounded-2xl opacity-80"
+            />
+        </div>
+
+        <div class="relative flex flex-col justify-center p-8 md:p-12 h-[85vh] md:h-auto overflow-hidden">
+            
+            <div class="form-scroll-container h-full overflow-y-auto pr-3">
+
+                <div id="registration-container" class="text-white">
+                    <div class="text-left mb-6">
+                        <h1 class="text-4xl font-bold text-white mb-2" style="font-weight: 800;">Get Started</h1>
+                        <h2 class="text-3xl font-bold text-white">Register for Cinesaga</h2>
+                    </div>
+
+                    <form id="registration-form" class="space-y-4">
+
+                        <div class="relative">
+                            <input type="text" id="name" placeholder="Enter Full Name" class="w-full bg-white/90 text-black px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition pl-12" required>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            </span>
+                        </div>
+
+                        <div class="relative">
+                            <input type="text" id="usn" placeholder="Enter USN" class="w-full bg-white/90 text-black px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition pl-12" required>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line></svg>
+                            </span>
+                        </div>
+
+                        <div class="relative">
+                            <input type="email" id="email" placeholder="Enter Email" class="w-full bg-white/90 text-black px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition pl-12" required>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </span>
+                        </div>
+
+                        <div class="relative">
+                            <input type="tel" id="phone" placeholder="Enter Phone Number" class="w-full bg-white/90 text-black px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition pl-12" required>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            </span>
+                        </div>
+
+                        <div class="relative">
+                            <select id="event" class="w-full bg-white/90 text-black px-4 py-3 rounded-lg outline-none focus:ring-2 focus:ring-purple-500 transition appearance-none pl-12" required>
+                                <option value="" disabled selected class="text-gray-500">Select your event</option>
+                                <option value="Photography">Photography</option>
+                                <option value="Reels">Reels</option>
+                            </select>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+                            </span>
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </span>
+                        </div>
+
+                        <button type="submit" class="group relative w-full bg-slate-900 h-14 border-2 border-purple-500 text-white text-base font-semibold rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:border-emerald-400 hover:text-emerald-300 p-3 text-center before:absolute before:w-10 before:h-10 before:right-2 before:top-2 before:z-[-1] before:bg-indigo-500 before:rounded-full before:blur-lg before:transition-all before:duration-500 after:absolute after:z-[-1] after:w-16 after:h-16 after:bg-teal-400 after:right-6 after:top-4 after:rounded-full after:blur-lg after:transition-all after:duration-500 hover:before:right-10 hover:before:-bottom-4 hover:before:blur hover:after:-right-6 hover:after:scale-110">
+                            Register!
+                        </button>
+                    </form>
+                </div>
+
+                <div id="pass-container" class="hidden text-white mt-8">
+                    <h1 class="text-3xl font-bold text-white mb-2" style="font-weight: 800;">Registration Successful!</h1>
+                    <p class="text-gray-400 mb-6">Save this pass! You will need this ID for submission.</p>
+
+                    <div class="taskello-pass-container" id="participant-pass-to-download">
+                        
+                        <div class="taskello-header-bg"></div>
+                        
+                        <p class="pass-event-name">CINESAGA 2K25</p>
+
+                        <div class="taskello-main-content">
+                            <p class="pass-participant-name" id="pass-participant-name"></p>
+                            
+                            <p class="pass-id-label">Participant ID</p>
+                            <p class="pass-id" id="participant-id"></p>
+                        </div>
+
+                        <div class="taskello-footer-data">
+                            <div class="taskello-footer-left">
+                                <img src="logo.png" alt="Event Logo" class="logo-img"/>
+                            </div>
+                            <div class="taskello-footer-right-details">
+                                Event: <span id="pass-event-category"></span><br>
+                                Date: 25 OCT 2025
+                            </div>
+                        </div>
+
+                        <div id="qrcode"></div>
+                    </div>
+
+                    <div class="lightbulb-button-container">
+                        <label class="lightbulb-button" for="btn-light-download" id="download-pass-btn">
+                          <input id="btn-light-download" name="btn-light-download" type="checkbox" />
+                          <div class="socket"></div>
+                          <div class="light-bulb">
+                            <svg fill="none" viewBox="0 0 131 151" width="22">
+                              <path
+                                stroke-width="8"
+                                stroke="currentColor"
+                                d="M1.00043 50.4999C80.0004 57.4999 102 50.4999 102 50.4999C102 50.4999 125 45.9999 127 31.4999C129 16.9998 115 1.49988 107.5 3.49988C100 5.49988 83.5004 16.9999 83.5004 75.4999C83.5004 83.9786 83.8466 91.4701 84.4622 98.0884M1 100.5C43.5028 96.7338 69.5067 97.0201 84.4622 98.0884M84.4622 98.0884C97.3045 99.0058 102 100.5 102 100.5C102 100.5 125 105 127 119.5C129 134 115 149.5 107.5 147.5C101.087 145.79 88.0938 137.134 84.4622 98.0884Z"
+                              ></path>
+                            </svg>
+                            <p class="text-light-bulb">Download Pass</p>
+                          </div>
+                        </label>
+                    </div>
+
+
+                    <a href="submit.html" class="block text-center text-gray-400 mt-4 hover:text-white transition font-medium">→ Go to Submission Page</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+<script>
+        let selectedEvent = '';
+        let participantName = '';
+        let generatedParticipantId = ''; // Store generated ID globally
+
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // 1. Collect form data
+            participantName = document.getElementById('name').value;
+            const usn = document.getElementById('usn').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            selectedEvent = document.getElementById('event').value;
+
+            // Simulate ID generation client-side (This ID is sent to the server to be saved)
+            const prefix = "CS25-";
+            const randomPart = Math.random().toString(36).substr(2, 5).toUpperCase();
+            const tempParticipantId = prefix + randomPart;
+            
+            // Prepare data for the server
+            const registrationData = {
+                name: participantName,
+                usn: usn,
+                email: email,
+                phone: phone,
+                event: selectedEvent,
+                participantId: tempParticipantId 
+            };
+
+            // 2. Send data to the backend for Google Sheets integration
+            fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    // Send as JSON for the Express server to parse with body-parser
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(registrationData),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Throw an error if the HTTP status is not 2xx
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // 3. Update the UI with data received from the server
+                    generatedParticipantId = data.data.participantId;
+                    
+                    document.getElementById('participant-id').textContent = generatedParticipantId;
+                    document.getElementById('pass-participant-name').textContent = participantName;
+                    document.getElementById('pass-event-category').textContent = selectedEvent; 
+
+                    // Switch views
+                    document.getElementById('registration-container').classList.add('hidden');
+                    document.getElementById('pass-container').classList.remove('hidden');
+
+                    // Generate QR Code immediately when pass is shown
+                    generateQrCode();
+
+                    // Optionally 'turn on' the lightbulb visually after registration
+                    document.getElementById('btn-light-download').checked = true;
+                } else {
+                    // Handle failure cases reported by the server (e.g., missing field)
+                    alert(`Registration failed: ${data.message}`);
+                }
+            })
+            .catch((error) => {
+                console.error('Fetch Error:', error);
+                alert(`A network or server error occurred. Ensure your Node.js server is running on http://localhost:3000.`);
+            });
+        });
+
+        function generateQrCode() {
+            const qrCodeContainer = document.getElementById('qrcode');
+            qrCodeContainer.innerHTML = ''; // Clear previous QR code
+
+            // Only generate if IDs exist
+            if (generatedParticipantId && participantName && selectedEvent) {
+                new QRCode(qrCodeContainer, {
+                    text: `ID: ${generatedParticipantId}, Name: ${participantName}, Event: ${selectedEvent}`,
+                    width: 60,
+                    height: 60,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            } else {
+                console.error("Missing data for QR code generation.");
+            }
+        }
+
+        // Download Pass functionality - Attached to the label
+        document.getElementById('download-pass-btn').addEventListener('click', function() {
+            // Trigger download only if the pass container is visible
+            if (!document.getElementById('pass-container').classList.contains('hidden')) {
+                const passElement = document.getElementById('participant-pass-to-download');
+                html2canvas(passElement, {
+                    backgroundColor: null, // Transparent background
+                    scale: 3 // Higher scale for better quality
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `Cinesaga_2K25_Pass_${participantName.replace(/\s/g, '_')}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>

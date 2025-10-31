@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Gallery</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        /* Essential for 3D Carousel Perspective */
+        .carousel-track {
+            transform-style: preserve-3d;
+            perspective: 1000px; /* Perspective applied to the track */
+        }
+
+        /* Individual Card Positioning and Transition */
+        .carousel-item {
+            /* Transform is set via JavaScript for dynamic 3D positioning */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s;
+            transform-origin: center;
+            will-change: transform, opacity;
+            cursor: pointer;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.15); /* White/20 */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* White/30 */
+        }
+    </style>
+</head>
+<body class="relative w-full h-screen">
+
+    <div 
+        class="absolute inset-0 bg-cover bg-center transition-all duration-500"
+        style="background-image: url(bg.jpg); filter: brightness(0.5); transform: scale(1.1);"
+    ></div>
+
+    <div class="absolute top-6 left-1/2 transform -translate-x-1/2 z-[100]">
+        <h1 class="px-6 py-2 rounded-full glass-panel text-white text-xl font-bold shadow-lg whitespace-nowrap">
+            Our Gallery
+        </h1>
+    </div>
+
+    <div class="absolute left-6 top-1/2 transform -translate-y-1/2 z-[100] hidden lg:block">
+        <div class="flex flex-col gap-4 p-3 rounded-2xl glass-panel shadow-lg bg-white/15">
+            <a href="index.html" class="p-3 hover:bg-white/20 rounded-xl transition">
+                <i data-lucide="home" class="w-5 h-5 text-white"></i>
+            </a>
+            <button id="download-btn" class="p-3 hover:bg-white/20 rounded-xl transition"><i data-lucide="download" class="w-5 h-5 text-white"></i></button>
+        </div>
+    </div>
+
+    <div class="absolute inset-0 flex items-center justify-center z-30 carousel-track">
+        <div id="carousel-container" class="relative w-full h-full flex items-center justify-center">
+            </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-[100]">
+        <div class="flex items-center gap-6 px-8 py-4 rounded-full glass-panel shadow-lg">
+            
+            <button id="nav-prev-bottom" class="p-2 hover:bg-white/20 rounded-full transition">
+                <i data-lucide="chevron-left" class="w-5 h-5 text-white"></i>
+            </button>
+            
+            <div class="text-center">
+                <h3 class="text-white font-semibold text-sm whitespace-nowrap">VCET Diaries</h3>
+            </div>
+            
+            <button id="nav-next-bottom" class="p-2 hover:bg-white/20 rounded-full transition">
+                <i data-lucide="chevron-right" class="w-5 h-5 text-white"></i>
+            </button>
+        </div>
+        
+        <div id="progress-dots" class="flex justify-center gap-2 mt-4">
+            </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // This ensures lucide icons are rendered for the sidebar and navbar
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons(); 
+            }
+            
+            // Updated mockArtworks data
+            const mockArtworks = [
+                { title: "general variety", artist: "Cinesaga 2K25", date: "25 Oct 2025", quote: "A stunning interplay of light and shadow captured during the event.", image_url: "gal1.jpg" },
+                { title: "VCET Event Highlight Reel", artist: "Media Team", date: "Nov 2025", quote: "The official highlight reel capturing the energy of the event.", image_url: "gal2.jpg" },
+                { title: "Dwapara 2k25", artist: "Participant 03", date: "26 Oct 2025", quote: "An abstract view of motion and emotion within a single frame.", image_url: "gal3.jpg" },
+                { title: "Dwapara 2k25", artist: "Participant 04", date: "26 Oct 2025", quote: "A beautiful portrait utilizing the ambient stage lighting.", image_url: "gal4.jpg" },
+                { title: "Yugantar 2k24", artist: "Participant 05", date: "26 Oct 2025", quote: "A minimalist shot focusing on the tools of the trade.", image_url: "gal5.jpg" },
+                { title: "Chilume-Chittara", artist: "Participant 06", date: "26 Oct 2025", quote: "Capturing the energy of the audience during the final performance.", image_url: "gal6.jpg" },
+                { title: "Chilume-Nartana", artist: "Participant 07", date: "27 Oct 2025", quote: "A powerful moment of calm before the storm.", image_url: "gal7.jpg" },
+                { title: "Chilume-Nartana", artist: "Media Team", date: "Oct 2025", quote: "The animated title sequence presented at the event's opening.", image_url: "gal8.jpg" },
+                { title: "RIDHAM 2K25", artist: "Participant 09", date: "26 Oct 2025", quote: "A study of reflections captured in the polished floor.", image_url: "gal9.jpg" },
+                { title: "RIDHAM-SWARAAHA", artist: "Participant 10", date: "27 Oct 2025", quote: "An entry in the Reels category focusing on quick cuts and motion.", image_url: "gal10.jpg" },
+                { title: "General Variety", artist: "Participant 11", date: "26 Oct 2025", quote: "A candid shot of a fellow participant focusing on their entry.", image_url: "gal11.jpg" },
+                { title: "General Variety", artist: "Participant 12", date: "26 Oct 2025", quote: "An exercise in black and white photography, emphasizing form.", image_url: "gal12.jpg" },
+                { title: "Team MAYURA", artist: "Event Organiser", date: "Nov 2025", quote: "A high-angle view of the judging panel in action.", image_url: "gal13.jpg" },
+                { title: "Chilume-MIME SHOW", artist: "Participant 14", date: "27 Oct 2025", quote: "A visual representation of audio equipment and stage sound.", image_url: "gal14.jpg" },
+                { title: "Chilume-Nartana", artist: "Participant 15", date: "26 Oct 2025", quote: "A shallow depth-of-field shot highlighting blurred lights.", image_url: "gal15.jpg" },
+                { title: "General Variety", artist: "Participant 16", date: "27 Oct 2025", quote: "Extreme close-up photography of a decorative element.", image_url: "gal16.jpg" },
+                { title: "General Variety", artist: "Participant 17", date: "26 Oct 2025", quote: "A wide shot showcasing collaboration and teamwork.", image_url: "gal17.jpg" },
+                { title: "Trijanma Moksha", artist: "Participant 18", date: "25 Oct 2025", quote: "An epic shot of the sunset over the VCET campus.", image_url: "gal18.jpg" },
+                { title: "Trijanma Moksha", artist: "Participant 19", date: "27 Oct 2025", quote: "The last entry submitted for the Reels category.", image_url: "gal19.jpg" },
+                { title: "Aavaran 2k25", artist: "Participant 20", date: "27 Oct 2025", quote: "A creative conceptual image representing abstract ideas.", image_url: "gal20.jpg" },
+            ];
+
+            let currentIndex = 0;
+            const totalItems = mockArtworks.length;
+            const carouselContainer = document.getElementById('carousel-container');
+            const progressDotsContainer = document.getElementById('progress-dots');
+            
+            // NOTE: activeArtistElement and activeDateElement are no longer used in the main logic, 
+            // but are kept as variables for simplicity if the bottom bar is expanded later.
+
+            // --- Core Logic: Update UI based on currentIndex ---
+            const updateCarousel = () => {
+                // 1. Update Cards (3D Transforms)
+                mockArtworks.forEach((artwork, index) => {
+                    const card = document.getElementById(`card-${index}`);
+                    if (!card) return;
+
+                    let diff = index - currentIndex;
+
+                    // Handle circular wrapping (shortest path)
+                    if (diff > totalItems / 2) diff -= totalItems;
+                    if (diff < -totalItems / 2) diff += totalItems;
+
+                    const absDiff = Math.abs(diff);
+                    let transform, zIndex, width, height, opacity;
+                    let isVisible = absDiff <= 2;
+
+                    if (diff === 0) {
+                        // Active Center Card
+                        transform = `translate(-50%, -50%) translateZ(250px)`;
+                        zIndex = 50;
+                        width = 'min(420px, 80vw)';
+                        height = 'min(450px, 85vh)';
+                        opacity = 1;
+                        card.classList.remove('z-30');
+                        card.classList.add('z-[50]');
+                        card.querySelector('.card-detail-content').classList.remove('hidden');
+                        card.querySelector('.card-preview').classList.add('hidden');
+                    } else if (absDiff === 1) {
+                        // Nearest Side Cards
+                        transform = `translate(-50%, -50%) translate3d(${diff * 20}vw, 0, 0) rotateY(${diff * 10}deg)`;
+                        zIndex = 49;
+                        width = 'min(300px, 40vw)';
+                        height = 'min(400px, 60vh)';
+                        opacity = 0.8;
+                        card.classList.remove('z-[50]');
+                        card.classList.add('z-30');
+                        card.querySelector('.card-detail-content').classList.add('hidden');
+                        card.querySelector('.card-preview').classList.remove('hidden');
+                    } else if (absDiff === 2) {
+                        // Farther Side Cards (still visible)
+                        transform = `translate(-50%, -50%) translate3d(${diff * 30}vw, 0, -100px) rotateY(${diff * 15}deg)`;
+                        zIndex = 48;
+                        width = 'min(300px, 35vw)';
+                        height = 'min(400px, 50vh)';
+                        opacity = 0.6;
+                        card.classList.remove('z-[50]');
+                        card.classList.add('z-30');
+                        card.querySelector('.card-detail-content').classList.add('hidden');
+                        card.querySelector('.card-preview').classList.remove('hidden');
+                    } else {
+                        // Hidden cards
+                        transform = `translate(-50%, -50%) translate3d(${diff * 30}vw, 0, -500px)`;
+                        zIndex = 1;
+                        width = 'min(300px, 35vw)';
+                        height = 'min(400px, 50vh)';
+                        opacity = 0;
+                        card.querySelector('.card-detail-content').classList.add('hidden');
+                        card.querySelector('.card-preview').classList.remove('hidden');
+                    }
+
+                    // Apply styles
+                    card.style.transform = transform;
+                    card.style.zIndex = zIndex;
+                    card.style.width = width;
+                    card.style.height = height;
+                    card.style.opacity = opacity;
+                });
+
+                // 2. Update Progress Dots
+                renderDots();
+            };
+
+            // --- Create Cards ---
+            const createCardHTML = (artwork, index) => {
+                const isActive = index === currentIndex;
+                const baseClasses = "absolute top-1/2 left-1/2 rounded-3xl backdrop-blur-xl shadow-2xl overflow-hidden transform-gpu origin-center cursor-pointer carousel-item";
+
+                return `
+                    <div id="card-${index}" class="${baseClasses} ${isActive ? 'z-[50]' : 'z-30'}" data-index="${index}">
+                        <div class="card-preview w-full h-full bg-cover bg-center transition-opacity duration-300 ${isActive ? 'hidden' : ''}"
+                             style="background-image: url(${artwork.image_url}); background-color: rgba(255, 255, 255, 0.1);">
+                        </div>
+
+                        <div class="card-detail-content w-full h-full bg-black/40 ${isActive ? '' : 'hidden'}">
+                            <div class="w-full h-[80%] bg-cover bg-center transition-all duration-500"
+                                style="background-image: url(${artwork.image_url});">
+                            </div>
+
+                            <div class="p-4 h-[20%] flex items-center justify-center">
+                                <h2 class="text-white text-xl font-semibold leading-tight text-center">${artwork.title}</h2>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+
+            const renderCards = () => {
+                carouselContainer.innerHTML = mockArtworks.map(createCardHTML).join('');
+                // Attach event listeners to newly created cards
+                carouselContainer.querySelectorAll('.carousel-item').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Prevent click on active card from triggering navigation
+                        if (e.currentTarget.dataset.index === String(currentIndex)) return;
+
+                        const clickedIndex = parseInt(e.currentTarget.dataset.index);
+                        const diff = clickedIndex - currentIndex;
+                        
+                        // Calculate steps to center the clicked card
+                        if (diff > 0) {
+                             navigate('next');
+                        } else {
+                             navigate('prev');
+                        }
+                    });
+                });
+                // Ensure icons are rendered after injection
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons(); 
+                }
+            };
+
+            // --- Create Dots ---
+            const renderDots = () => {
+                progressDotsContainer.innerHTML = mockArtworks.map((_, index) => `
+                    <div 
+                        class="w-2 h-2 rounded-full cursor-pointer transition-all ${index === currentIndex ? 'bg-red-500 scale-125' : 'bg-white/40'}"
+                        data-index="${index}"
+                        onclick="setCurrentIndexFromDot(${index})"
+                    ></div>
+                `).join('');
+            };
+
+            // --- Navigation Logic ---
+            const navigate = (direction) => {
+                if (direction === 'next') {
+                    currentIndex = (currentIndex + 1) % totalItems;
+                } else {
+                    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                }
+                updateCarousel();
+            };
+
+            window.setCurrentIndexFromDot = (newIndex) => {
+                 currentIndex = newIndex;
+                 updateCarousel();
+            };
+            
+            // --- Download Logic ---
+            const downloadActiveImage = () => {
+                const activeArtwork = mockArtworks[currentIndex];
+                const imagePath = activeArtwork.image_url;
+                
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = imagePath;
+                // Use the image path as the suggested download name
+                link.download = imagePath; 
+                
+                // Append to body and trigger click
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+
+            // Attach navigation and download buttons
+            document.getElementById('nav-prev-bottom').addEventListener('click', () => navigate('prev'));
+            document.getElementById('nav-next-bottom').addEventListener('click', () => navigate('next'));
+            document.getElementById('download-btn').addEventListener('click', downloadActiveImage);
+
+
+            // Initial render
+            renderCards();
+            updateCarousel();
+        });
+    </script>
+</body>
+</html>

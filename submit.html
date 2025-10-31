@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Entry - Cinesaga 2K25</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap'>
+    
+    <style>
+        /* Base styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000; 
+        }
+
+        /* Custom scrollbar */
+        .form-scroll-container::-webkit-scrollbar { width: 6px; }
+        .form-scroll-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+        .form-scroll-container::-webkit-scrollbar-thumb { background: #fff; border-radius: 3px; }
+
+        /* Style for page-level logo */
+        .page-logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            width: 60px;
+            height: auto;
+        }
+        
+        /* Submission Input Styling */
+        .submission-input {
+            appearance: none;
+            background-color: #ffffff; 
+            color: #000;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: all 0.3s ease;
+            padding-left: 3rem; /* Space for icon */
+        }
+        .submission-input:focus {
+            box-shadow: 0 0 0 2px #a855f7; /* Tailwind purple-500 ring */
+        }
+
+        /* Removed custom-file-input styles as they are no longer needed */
+
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden flex items-center justify-center p-4 bg-black">
+
+    <img src="logo.png" alt="Cinesaga Logo" class="page-logo"/>
+
+    <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20"></div>
+
+    <img
+        src="https://cdn.pixabay.com/photo/2020/03/09/06/18/camera-4914690_1280.jpg"
+        alt="Background"
+        class="absolute inset-0 w-full h-full object-cover opacity-40"
+    />
+
+    <div class="relative w-full max-w-6xl mx-4 bg-black/40 backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden grid grid-cols-1 lg:grid-cols-2">
+
+        <div class="hidden lg:flex items-center justify-center p-12">
+            <img
+                src="https://cdn.pixabay.com/photo/2014/11/22/00/51/camera-541213_1280.jpg"
+                alt="Robot"
+                class="w-full h-auto object-contain rounded-2xl opacity-80"
+            />
+        </div>
+
+        <div class="relative flex flex-col justify-center p-8 md:p-12 h-[85vh] md:h-auto overflow-hidden">
+            
+            <div class="form-scroll-container h-full overflow-y-auto pr-3">
+
+                <div id="submission-container" class="text-white">
+                    <div class="text-left mb-8">
+                        <h1 class="text-4xl font-bold text-white mb-2" style="font-weight: 800;">Submit Entry</h1>
+                        <h2 class="text-3xl font-bold text-white">Cinesaga 2K25</h2>
+                    </div>
+
+                    <form id="submission-form" class="space-y-6">
+
+                        <div class="relative">
+                            <input type="text" id="participant-id" placeholder="Enter Participant ID (e.g., CS25-A1B2C)" class="w-full submission-input text-black" required>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="12" x2="12" y1="2" y2="15"></line></svg>
+                            </span>
+                        </div>
+
+                        <div class="relative">
+                            <select id="event-select" class="w-full submission-input text-black appearance-none" required>
+                                <option value="" disabled selected class="text-gray-500">Select Event Category</option>
+                                <option value="Photography">Photography (Link)</option>
+                                <option value="Reels">Reels (Link)</option>
+                            </select>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-camera"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle></svg>
+                            </span>
+                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </span>
+                        </div>
+                        
+                        <div id="media-submission-fields" class="space-y-4">
+                             <div class="relative">
+                                <input type="url" id="media-url" name="mediaUrl" placeholder="Enter Photo/Reels Link (Drive, Imgur, YouTube, etc.)" class="w-full submission-input text-black" required>
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.74 1.74"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="relative">
+                            <textarea id="description" placeholder="Provide a brief description of your submission (Required for all entries)..." class="w-full submission-input text-black h-32 pt-3" style="padding-left: 1rem; padding-right: 1rem; resize: none;" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="group relative w-full bg-slate-900 h-14 border-2 border-purple-500 text-white text-base font-semibold rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-[1.02] hover:border-emerald-400 hover:text-emerald-300 p-3 text-center before:absolute before:w-10 before:h-10 before:right-2 before:top-2 before:z-[-1] before:bg-indigo-500 before:rounded-full before:blur-lg before:transition-all before:duration-500 after:absolute after:z-[-1] after:w-16 after:h-16 after:bg-teal-400 after:right-6 after:top-4 after:rounded-full after:blur-lg after:transition-all after:duration-500 hover:before:right-10 hover:before:-bottom-4 hover:before:blur hover:after:-right-6 hover:after:scale-110">
+                            Submit Entry
+                        </button>
+                    </form>
+                </div>
+
+                <div id="success-container" class="hidden text-white text-center pt-16">
+                    <h1 class="text-4xl font-bold text-emerald-400 mb-4" style="font-weight: 800;">Success!</h1>
+                    <p class="text-xl text-white mb-6">Your entry has been received for the <span id="success-event" class="font-semibold text-white"></span> event.</p>
+                    <p class="text-gray-400 text-sm">Thank you, <span id="success-id" class="font-semibold text-white"></span>. Good luck!</p>
+                    <a href="index.html" class="block text-center text-gray-400 mt-12 hover:text-white transition">← Back to Home</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const eventSelect = document.getElementById('event-select');
+        const submissionForm = document.getElementById('submission-form');
+        const submissionContainer = document.getElementById('submission-container');
+        const successContainer = document.getElementById('success-container');
+        
+        // --- The updateMediaFields function is no longer needed since the field is static ---
+        
+        // --- Form Submission Logic (Simplified for URL-Only Submission) ---
+        submissionForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const eventSelectValue = eventSelect.value;
+            const participantId = document.getElementById('participant-id').value;
+            const description = document.getElementById('description').value;
+            const mediaUrl = document.getElementById('media-url').value; // Get the URL
+            
+            // 1. Basic validation (URL check)
+            if (!mediaUrl) {
+                alert("Please enter the Submission URL.");
+                return;
+            }
+
+            // 2. Collect all fields into a single JavaScript object
+            const submissionData = {
+                participantId: participantId,
+                eventCategory: eventSelectValue,
+                description: description,
+                mediaUrl: mediaUrl // This holds the final submission link
+            };
+            
+            // 3. Send data as JSON to the backend
+            fetch('/api/submit', {
+                method: 'POST',
+                // CRITICAL FIX: Tell the server the content is JSON
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // CRITICAL FIX: Convert the JavaScript object to a JSON string
+                body: JSON.stringify(submissionData), 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Display success message
+                    document.getElementById('success-id').textContent = participantId;
+                    document.getElementById('success-event').textContent = eventSelectValue;
+
+                    // Switch views
+                    submissionContainer.classList.add('hidden');
+                    successContainer.classList.remove('hidden');
+                    console.log('Submission success response:', data);
+                } else {
+                    alert(`Submission failed: ${data.message}. Check the console for details.`);
+                }
+            })
+            .catch((error) => {
+                console.error('Fetch Error:', error);
+                alert('A network or server error occurred. Ensure your Node.js server is running.');
+            });
+        });
+    });
+</script>
+</html>
