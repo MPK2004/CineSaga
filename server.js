@@ -12,7 +12,7 @@ const { JWT } = require('google-auth-library'); // Auth module
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3007;
+const PORT = process.env.PORT || 3000;
 // --- GOOGLE API SETUP ---
 
 // 1. JWT Authentication
