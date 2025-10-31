@@ -12,8 +12,7 @@ const { JWT } = require('google-auth-library'); // Auth module
 const path = require('path');
 
 const app = express();
-const PORT = 3003;
-
+const PORT = process.env.PORT || 3007;
 // --- GOOGLE API SETUP ---
 
 // 1. JWT Authentication
@@ -129,6 +128,7 @@ app.post('/api/submit', async (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
+    // The console log uses the variable, so it will show the correct port
     console.log(`Server is running at http://localhost:${PORT}`);
     console.log(`To register, open: http://localhost:${PORT}/register.html`);
 });
