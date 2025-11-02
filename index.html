@@ -151,30 +151,6 @@
             transform: translateY(-2px);
         }
 
-        /* ... existing .register-btn:hover style ... */
-
-        /* --- 2.5. NEW Hamburger Button Styles --- */
-        .nav-toggle-btn {
-            display: none; /* Hidden on desktop */
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-            z-index: 101; /* Must be above the nav overlay */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .nav-toggle-btn .hamburger-line {
-            display: block;
-            width: 25px;
-            height: 3px;
-            background-color: #ffffff;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-
         /* --- 3. Hero Section & NEW 3D Marquee --- */
         .hero-section {
             height: 100vh; /* Full viewport height */
@@ -401,70 +377,9 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-@media (max-width: 992px) {
-            .nav-toggle-btn {
-                display: block; /* Show hamburger button */
-            }
 
-            .main-nav { 
-                /* This is now the mobile overlay */
-                position: fixed;
-                top: 0;
-                right: 0; 
-                width: 100%;
-                height: 100vh;
-                background: rgba(17, 17, 17, 0.95); /* Dark, blurred background */
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
-                z-index: 100; /* Behind the hamburger button */
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                /* Hide it off-screen by default */
-                transform: translateX(100%);
-                transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-
-                /* Remove desktop-specific styles */
-                left: auto;
-                padding: 0;
-                border-radius: 0;
-                border: none;
-                box-shadow: none;
-            }
-
-            /* This class is toggled by JS on the <header> */
-            .main-header.nav-open .main-nav {
-                transform: translateX(0%); /* Slide in */
-            }
-
-            .main-nav ul {
-                flex-direction: column; /* Stack links vertically */
-                gap: 2.5rem; /* Space them out */
-                text-align: center;
-            }
-
-            .main-nav a {
-                font-size: 1.8rem; /* Make links bigger */
-                font-weight: 700;
-                color: #ffffff;
-            }
-            
-            .main-nav a:hover::after {
-                width: 50%; /* Adjust hover effect */
-            }
-
-            /* Animate hamburger to 'X' */
-            .main-header.nav-open .nav-toggle-btn .hamburger-line:nth-child(1) {
-                 transform: rotate(45deg) translate(5px, 6px);
-            }
-            .main-header.nav-open .nav-toggle-btn .hamburger-line:nth-child(2) {
-                opacity: 0;
-            }
-            .main-header.nav-open .nav-toggle-btn .hamburger-line:nth-child(3) {
-                 transform: rotate(-45deg) translate(5px, -6px);
-            }
+        @media (max-width: 992px) {
+            .main-nav { display: none; } /* Hide nav on tablets/mobile for now */
         }
 
 
@@ -706,7 +621,7 @@
         
         <div class="hero-overlay"></div>
 
-<header class="main-header">
+        <header class="main-header">
             <a href="index.html" class="logo-container">
                 <img src="images/logo.PNG" alt="VCET Diaries Logo">
             </a>
@@ -719,12 +634,6 @@
                 </ul>
             </nav>
             <a href="submit.html" class="register-btn">Submit</a>
-
-            <button class="nav-toggle-btn" aria-label="Toggle navigation menu">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
         </header>
 
         <main class="hero-content">
@@ -819,26 +728,6 @@
                     track.appendChild(a);
                 });
             });
-const header = document.querySelector('.main-header');
-            const navToggle = document.querySelector('.nav-toggle-btn');
-            const navLinks = document.querySelectorAll('.main-nav a');
-
-            // 1. Toggle nav on hamburger click
-            if (navToggle) {
-                navToggle.addEventListener('click', () => {
-                    header.classList.toggle('nav-open');
-                });
-            }
-
-            // 2. Close nav when a link is clicked (good for mobile)
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (header.classList.contains('nav-open')) {
-                        header.classList.remove('nav-open');
-                    }
-                });
-            });
-
         });
     </script>
 </body>
